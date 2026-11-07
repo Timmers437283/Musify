@@ -1,0 +1,123 @@
+/* Musify Settings design + playlist importer. Flat: no gradients, no shadows.
+   Everything is scoped to #settings (plus a few body classes for the two display toggles). */
+
+#settings [hidden]{display:none!important}
+#settings{max-width:880px}
+
+/* ---------- page + sections ---------- */
+#settings .st-title{font-size:32px;font-weight:800;letter-spacing:-1px;margin:0}
+#settings .section.st-body{margin-top:26px}
+#settings .st-group,
+#settings #acctSettings{margin:0 0 34px}
+#settings .st-h,
+#settings .acct-label{font-size:16px;font-weight:700;letter-spacing:0;color:#fff;margin:0 0 6px}
+/* auth.js writes the heading as "ACCOUNT"; show it as "Account" like the other headings */
+#settings .acct-label{text-transform:lowercase}
+#settings .acct-label::first-letter{text-transform:uppercase}
+
+/* ---------- rows (also styles the Account rows that auth.js adds) ---------- */
+#settings .setting-row{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:52px;padding:10px 0;border:0}
+#settings .setting-row h3{font-size:14px;font-weight:400;color:#b3b3b3;margin:0}
+#settings .setting-row p{font-size:12px;line-height:1.45;color:#7a7a7a;margin:3px 0 0}
+#settings .setting-row > div:first-child{min-width:0}
+
+/* outlined pill buttons */
+#settings .setting-row button,
+#settings .st-pill{background:transparent;color:#fff;border:1px solid #7c7c7c;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:border-color .15s ease,transform .15s ease}
+#settings .setting-row button:hover,
+#settings .st-pill:hover{background:transparent;border-color:#fff;transform:scale(1.03)}
+
+/* toggle switch */
+.st-toggle{position:relative;display:inline-block;width:48px;height:24px;flex-shrink:0}
+.st-toggle input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.st-toggle span{position:absolute;inset:0;background:#4d4d4d;border-radius:999px;transition:background .2s ease}
+.st-toggle span::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s ease}
+.st-toggle input:checked + span{background:var(--green)}
+.st-toggle input:checked + span::after{transform:translateX(24px)}
+.st-toggle input:focus-visible + span{outline:2px solid #fff;outline-offset:2px}
+
+/* volume */
+.st-volume{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.st-volume input{width:180px;accent-color:#fff;cursor:pointer}
+.st-volume span{width:40px;text-align:right;font-size:12px;color:#b3b3b3;font-variant-numeric:tabular-nums}
+
+/* ---------- importer ---------- */
+.st-card{background:#080808;border:1px solid #1f1f1f;border-radius:12px;padding:20px}
+.st-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.st-card-head h2{font-size:16px;font-weight:700;margin:0}
+.st-badge{font-size:12px;font-weight:700;color:#1ed760;background:#0c2a17;border:1px solid #14502a;border-radius:999px;padding:3px 11px;white-space:nowrap}
+.st-badge.busy{color:#f5c542;background:#2a2208;border-color:#54440f}
+.st-badge.err{color:#ff7a7a;background:#2a0d0d;border-color:#541818}
+
+.imp-source-title{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;margin:0 0 10px}
+.imp-source-title i{font-size:15px}
+.imp-label{display:block;font-size:12px;color:#d0d0d0;margin:0 0 8px}
+.imp-hint{font-size:11px;color:#7a7a7a;margin:8px 0 0;line-height:1.45}
+
+#settings #impInput,
+#settings #impName{display:block;width:100%;background:#2a2a2a;border:1px solid transparent;border-radius:10px;padding:12px 14px;color:#fff;font:inherit;font-size:14px;line-height:1.4;outline:none;transition:border-color .15s ease}
+#settings #impInput{resize:none;min-height:46px;max-height:150px;overflow-y:auto}
+#settings #impInput::placeholder,
+#settings #impName::placeholder{color:#8a8a8a}
+#settings #impInput:focus,
+#settings #impName:focus{border-color:#6a6a6a}
+
+.imp-tools{display:flex;align-items:center;gap:14px;margin-top:10px}
+.st-link{background:none;border:none;color:#b3b3b3;font-size:12px;font-weight:600;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:7px;transition:color .15s ease}
+.st-link:hover{color:#fff}
+.imp-name{margin-top:14px}
+.imp-name label{display:block;font-size:12px;color:#d0d0d0;margin:0 0 8px}
+
+.imp-btn{display:block;width:100%;height:46px;margin-top:18px;border:none;border-radius:999px;background:#151515;color:#6e6e6e;font-size:14px;font-weight:700;cursor:default;transition:background .15s ease,color .15s ease}
+.imp-btn:not(:disabled){background:#fff;color:#000;cursor:pointer}
+.imp-btn:not(:disabled):hover{background:#e4e4e4}
+
+.imp-progress{margin-top:16px}
+.imp-bar{height:4px;background:#2a2a2a;border-radius:999px;overflow:hidden}
+.imp-bar div{height:100%;width:0;background:var(--green);transition:width .2s ease}
+.imp-progress-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;font-size:12px;color:#b3b3b3}
+
+.imp-preview{margin-top:14px;font-size:12px;color:#b3b3b3}
+.imp-message{margin-top:10px;font-size:12px;line-height:1.5;color:#b3b3b3}
+.imp-message.err{color:#ff9a9a}
+.imp-message button{margin-left:6px}
+
+.imp-unmatched{margin-top:12px;font-size:12px;color:#b3b3b3}
+.imp-unmatched summary{cursor:pointer;font-weight:600;color:#fff;list-style:none}
+.imp-unmatched summary::-webkit-details-marker{display:none}
+.imp-unmatched summary::before{content:"\25B8";display:inline-block;width:14px;color:#b3b3b3}
+.imp-unmatched[open] summary::before{content:"\25BE"}
+.imp-unmatched ol{margin:10px 0 0;padding:0 0 0 22px;max-height:220px;overflow-y:auto;line-height:1.7}
+.imp-unmatched li{overflow-wrap:anywhere}
+
+/* ---------- modals opened from Settings ---------- */
+@media (min-width:701px){
+body[data-page="settings"] .panel{background:#121212;border:1px solid #2a2a2a;border-radius:12px;padding:24px}
+}
+body[data-page="settings"] .panel-header h2{font-size:20px;font-weight:800;letter-spacing:-.4px}
+body[data-page="settings"] .panel-body{color:#b3b3b3;font-size:13px}
+body[data-page="settings"] .panel .btn{background:transparent;border:1px solid #7c7c7c;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:700;transition:border-color .15s ease,transform .15s ease}
+body[data-page="settings"] .panel .btn:hover{border-color:#fff;transform:scale(1.03)}
+body[data-page="settings"] .panel .btn.primary{background:#fff;color:#000;border-color:#fff}
+body[data-page="settings"] .panel .btn.primary:hover{background:#e4e4e4}
+body[data-page="settings"] .panel .btn.selected{border-color:var(--green);color:var(--green)}
+body[data-page="settings"] .panel .text-input{background:#2a2a2a;border:1px solid transparent;border-radius:8px}
+body[data-page="settings"] .panel .text-input:focus{border-color:#6a6a6a}
+
+/* ---------- display toggles (Your Library / Display) ---------- */
+body.compact-lib .lib-item{padding:3px 8px}
+body.compact-lib .lib-thumb{width:28px;height:28px;font-size:11px}
+body.compact-lib .lib-meta span{display:none}
+
+.app.has-right.no-right:not(.lyr-full){grid-template-columns:230px minmax(0,1fr)}
+.app.no-right:not(.lyr-full) .rightbar{display:none}
+@media (max-width:1000px){.app.has-right.no-right:not(.lyr-full){grid-template-columns:190px minmax(0,1fr)}}
+@media (max-width:700px){.app.has-right.no-right:not(.lyr-full){grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- phones ---------- */
+@media (max-width:700px){
+#settings .st-title{font-size:26px}
+#settings .setting-row{padding:10px 0}
+.st-volume input{width:120px}
+.st-card{padding:16px}
+}

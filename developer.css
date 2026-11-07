@@ -1,0 +1,51 @@
+/* Musify Developer dashboard (owner only). Flat: no gradients, no shadows. Reuses the Settings look. */
+#developer{max-width:880px}
+#developer [hidden]{display:none!important}
+#developer .st-title{font-size:32px;font-weight:800;letter-spacing:-1px;margin:0 0 6px}
+#developer .setting-row{border:0;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:52px;padding:10px 0}
+#developer .setting-row h3{font-size:14px;font-weight:400;color:#b3b3b3;margin:0}
+#developer .setting-row p{font-size:12px;line-height:1.45;color:#7a7a7a;margin:3px 0 0}
+#developer .st-group{margin:0 0 34px}
+#developer .st-h{font-size:16px;font-weight:700;color:#fff;margin:0 0 6px}
+#developer .st-pill{background:transparent;color:#fff;border:1px solid #7c7c7c;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:border-color .15s ease,transform .15s ease}
+#developer .st-pill:hover:not(:disabled){border-color:#fff;transform:scale(1.03)}
+#developer .st-pill:disabled{opacity:.5;cursor:default}
+
+.dev-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:26px}
+.dev-updated{font-size:12px;color:#7a7a7a;white-space:nowrap}
+
+.dev-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:38px}
+.dev-card{background:#080808;border:1px solid #1f1f1f;border-radius:12px;padding:20px;min-width:0}
+.dev-label{font-size:13px;font-weight:600;color:#b3b3b3}
+.dev-num{font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin:10px 0 6px;font-variant-numeric:tabular-nums}
+.dev-sub{font-size:11px;color:#7a7a7a;line-height:1.4}
+.dev-sub.err{color:#ff9a9a}
+
+.dev-bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:6px;color:#7a7a7a;font-size:12px}
+.dev-bar{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}
+.dev-bar-fill{width:100%;background:var(--green);border-radius:4px 4px 0 0;min-height:2px;flex-shrink:0;transition:height .3s ease}
+.dev-bar-n{font-size:12px;color:#fff;font-weight:600}
+.dev-bar-d{font-size:11px;color:#7a7a7a}
+
+.dev-val{font-size:13px;color:#fff;text-align:right;overflow-wrap:anywhere;max-width:60%}
+
+.dev-list{margin-top:4px}
+.dev-server{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:12px;align-items:center;padding:7px 0;font-size:12px}
+.dev-server-kind{color:#b3b3b3}
+.dev-server-name{color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dev-server-status{color:#7a7a7a;font-variant-numeric:tabular-nums}
+.dev-server-status.ok{color:var(--green)}
+.dev-server-status.bad{color:#ff9a9a}
+
+.dev-setup{font-size:13px;color:#b3b3b3}
+.dev-setup summary{cursor:pointer;font-weight:600;color:#fff;margin-bottom:10px}
+.dev-help{font-size:12px;line-height:1.5;color:#7a7a7a;margin:0 0 12px}
+.dev-code{background:#0d0d0d;border:1px solid #1f1f1f;border-radius:8px;padding:14px;margin:0 0 12px;font-size:11px;line-height:1.55;color:#d0d0d0;overflow-x:auto;white-space:pre}
+
+@media (max-width:700px){
+.dev-stats{grid-template-columns:minmax(0,1fr);gap:10px}
+.dev-num{font-size:44px}
+.dev-head{flex-direction:column;align-items:flex-start;gap:6px}
+.dev-server{grid-template-columns:90px minmax(0,1fr) auto}
+.dev-val{max-width:55%}
+}

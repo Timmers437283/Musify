@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#010101">
+<title>Musify</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="settings.css">
+<link rel="stylesheet" href="developer.css">
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar">
+    <div class="logo" onclick="navigate('home')">MUSIFY<span>.</span></div>
+    <div class="nav-section">
+        <div class="nav-title">MENU</div>
+        <div class="nav-item active" data-page="home" onclick="navigate('home')"><i class="fa-solid fa-house"></i> Home</div>
+        <div class="nav-item" data-page="search" onclick="navigate('search')"><i class="fa-solid fa-magnifying-glass"></i> Search</div>
+        <div class="nav-item" data-page="explore" onclick="navigate('explore')"><i class="fa-solid fa-compass"></i> Explore</div>
+    </div>
+    <div class="lib-header">
+        <div class="nav-title">YOUR LIBRARY</div>
+        <button class="lib-add" title="Create playlist" onclick="createPlaylistDialog()"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div class="lib-list" id="libList"></div>
+    <div class="sidebar-bottom">
+        <div class="nav-item" data-page="settings" onclick="navigate('settings')"><i class="fa-solid fa-gear"></i> Settings</div>
+    </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+    <div class="navigation">
+        <button class="nav-button" id="backButton" title="Back"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="nav-button" id="forwardButton" title="Forward"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="topbar-right">
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="text" placeholder="What do you want to listen to?" enterkeyhint="search" autocomplete="off">
+        </div>
+        <div class="profile" title="Account" onclick="navigate('settings')"><i class="fa-solid fa-user"></i></div>
+    </div>
+</header>
+
+<div class="content" id="content">
+<section class="page active" id="home">
+    <h1 class="page-heading">Home</h1>
+    <p class="page-subtitle">Welcome back.</p>
+    <div class="section">
+        <div class="section-header">
+            <h2>Your playlists</h2>
+            <button class="btn" onclick="createPlaylistDialog()"><i class="fa-solid fa-plus"></i> New playlist</button>
+        </div>
+        <div class="music-grid" id="homePlaylistGrid"></div>
+    </div>
+    <div class="section">
+        <div class="section-header">
+            <h2>Trending</h2>
+            <button onclick="loadTrending()">Refresh</button>
+        </div>
+        <div class="music-grid" id="trendingGrid"></div>
+        <div class="loading-message" id="trendingMessage">Loading music...</div>
+    </div>
+</section>
+
+<section class="page" id="search">
+    <h1 class="page-heading">Search</h1>
+    <p class="page-subtitle">Find your next favorite song.</p>
+    <div class="tab-row search-tabs" id="searchTabs"></div>
+    <div class="search-message" id="searchMessage">Search for artists, albums and songs.</div>
+    <div id="searchTop"></div>
+    <div class="search-block" data-block="artists"><h2>Artists</h2><div class="artist-row" id="searchArtists"></div></div>
+    <div class="search-block" data-block="albums"><h2>Albums</h2><div class="music-grid" id="searchAlbums"></div></div>
+    <div class="search-block" data-block="playlists"><h2>Playlists</h2><div class="music-grid" id="searchPlaylists"></div></div>
+    <div class="search-block" data-block="songs"><h2>Songs</h2><div class="music-grid" id="searchResults"></div></div>
+</section>
+
+<section class="page" id="explore">
+    <h1 class="page-heading">Explore</h1>
+    <p class="page-subtitle">Find something new.</p>
+    <div class="section">
+        <div class="section-header">
+            <h2>Trending music</h2>
+            <button onclick="loadTrending()">Refresh</button>
+        </div>
+        <div class="music-grid" id="exploreGrid"></div>
+    </div>
+</section>
+
+<section class="page" id="library">
+    <h1 class="page-heading">Your Library</h1>
+    <p class="page-subtitle">Liked songs and your playlists.</p>
+    <div class="section">
+        <div class="section-header">
+            <h2>Playlists</h2>
+            <button class="btn" onclick="createPlaylistDialog()"><i class="fa-solid fa-plus"></i> New playlist</button>
+        </div>
+        <div class="music-grid" id="libraryGrid"></div>
+    </div>
+    <div class="section" id="libraryArtistsSection" style="display:none">
+        <div class="section-header"><h2>Artists you follow</h2></div>
+        <div class="artist-row flush" id="libraryArtists"></div>
+    </div>
+</section>
+
+<section class="page" id="artist">
+    <div id="artistView"></div>
+</section>
+
+<section class="page" id="album">
+    <div id="albumView"></div>
+</section>
+
+<section class="page" id="playlist">
+    <div id="playlistView"></div>
+</section>
+
+<section class="page" id="developer">
+    <div id="developerView"></div>
+</section>
+
+<section class="page" id="settings">
+    <h1 class="page-heading st-title">Settings</h1>
+    <div class="section st-body">
+
+        <div class="st-group">
+            <h2 class="st-h">Profile</h2>
+            <div class="setting-row"><div><h3>Display name</h3><p id="nameStatus"></p></div><button onclick="changeDisplayName()">Change</button></div>
+        </div>
+
+        <div class="st-group">
+            <h2 class="st-h">Playback</h2>
+            <div class="setting-row"><div><h3>Volume</h3></div><div class="st-volume"><input type="range" id="stVolume" min="0" max="100" value="100" aria-label="Volume"><span id="stVolumeValue">100%</span></div></div>
+            <div class="setting-row"><div><h3>Reset shuffle and repeat</h3></div><button id="stResetPlayback">Reset</button></div>
+            <div class="setting-row"><div><h3>Clear saved audio sources</h3><p>Forget the saved list of music servers and song matches.</p></div><button id="stResetAudio">Clear</button></div>
+        </div>
+
+        <div class="st-group">
+            <h2 class="st-h">Your Library</h2>
+            <div class="setting-row"><div><h3>Use compact library layout</h3></div><label class="st-toggle"><input type="checkbox" id="stCompact" aria-label="Use compact library layout"><span></span></label></div>
+            <div class="setting-row"><div><h3>Import music from other apps</h3></div><button id="stGoImport">Import playlist</button></div>
+        </div>
+
+        <div class="st-group" id="importSection">
+            <div class="st-card">
+                <div class="st-card-head"><h2>Import playlist</h2><span class="st-badge" id="impBadge">Ready</span></div>
+                <div class="imp-source-title"><i class="fa-solid fa-music"></i> Spotify playlist</div>
+                <label class="imp-label" for="impInput">Paste a Spotify playlist link or song list</label>
+                <textarea id="impInput" rows="1" placeholder="https://open.spotify.com/playlist/…" spellcheck="false" autocomplete="off"></textarea>
+                <div class="imp-tools">
+                    <button class="st-link" id="impFileBtn" type="button"><i class="fa-solid fa-file-arrow-up"></i> Upload a .txt or .csv file</button>
+                    <input type="file" id="impFile" accept=".txt,.csv,text/plain,text/csv" hidden>
+                </div>
+                <p class="imp-hint">A song list is one song per line, like “Song – Artist”. CSV files need a title column and (ideally) an artist column.</p>
+                <div class="imp-name" id="impNameRow" hidden>
+                    <label for="impName">Playlist name</label>
+                    <input id="impName" type="text" maxlength="50" placeholder="Playlist name" autocomplete="off">
+                </div>
+                <button class="imp-btn" id="impBtn" type="button" disabled>Import playlist</button>
+                <div class="imp-progress" id="impProgress" hidden>
+                    <div class="imp-bar"><div id="impBarFill"></div></div>
+                    <div class="imp-progress-row"><span id="impStatus"></span><button class="st-link" id="impCancel" type="button">Cancel</button></div>
+                </div>
+                <div class="imp-preview" id="impPreview">Paste a link or a list of songs to see a preview.</div>
+                <div class="imp-message" id="impMessage" hidden></div>
+                <details class="imp-unmatched" id="impUnmatched" hidden>
+                    <summary id="impUnmatchedTitle">Unmatched songs</summary>
+                    <ol id="impUnmatchedList"></ol>
+                </details>
+            </div>
+        </div>
+
+        <div class="st-group">
+            <h2 class="st-h">Display</h2>
+            <div class="setting-row"><div><h3>Show the now-playing panel</h3></div><label class="st-toggle"><input type="checkbox" id="stNowPlaying" checked aria-label="Show the now-playing panel"><span></span></label></div>
+        </div>
+
+        <div class="st-group">
+            <h2 class="st-h">Privacy</h2>
+            <div class="setting-row"><div><h3>Cookies &amp; storage</h3><p id="cookieStatus">No choice made yet.</p></div><button onclick="openPanel('cookies')">Manage</button></div>
+        </div>
+
+        <div class="st-group">
+            <h2 class="st-h">About</h2>
+            <div class="setting-row"><div><h3>About Musify</h3><p>Music, without the unnecessary clutter.</p></div><button onclick="openPanel('about')">View</button></div>
+        </div>
+
+    </div>
+</section>
+</div>
+</main>
+
+<footer class="player">
+    <div class="now-playing">
+        <div class="player-cover" id="playerCover"><i class="fa-solid fa-music"></i></div>
+        <div class="track-info">
+            <h4 id="trackTitle">Nothing playing</h4>
+            <p id="trackArtist">Select a song to get started.</p>
+        </div>
+        <button class="player-add" id="playerAddButton" title="Add to playlist" disabled><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div class="player-center">
+        <div class="controls">
+            <button id="shuffleButton" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+            <button id="previousButton" title="Previous" disabled><i class="fa-solid fa-backward-step"></i></button>
+            <button class="play" id="playButton" title="Play" disabled><i class="fa-solid fa-play"></i></button>
+            <button id="nextButton" title="Next" disabled><i class="fa-solid fa-forward-step"></i></button>
+            <button id="repeatButton" title="Repeat"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <div class="progress">
+            <span id="currentTime">0:00</span>
+            <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+            <span id="duration">0:00</span>
+        </div>
+    </div>
+    <div class="player-extra">
+        <button title="Lyrics" onclick="openPanel('lyrics')"><i class="fa-solid fa-align-left"></i></button>
+        <button title="Queue" onclick="openPanel('queue')"><i class="fa-solid fa-list"></i></button>
+        <button title="Volume" onclick="openPanel('volume')"><i class="fa-solid fa-volume-high"></i></button>
+    </div>
+</footer>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="Main">
+    <button data-page="home" onclick="navigate('home')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button data-page="search" onclick="navigate('search')"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+    <button data-page="explore" onclick="navigate('explore')"><i class="fa-solid fa-compass"></i><span>Explore</span></button>
+    <button data-page="library" onclick="navigate('library')"><i class="fa-solid fa-music"></i><span>Library</span></button>
+    <button data-page="settings" onclick="navigate('settings')"><i class="fa-solid fa-gear"></i><span>Settings</span></button>
+</nav>
+</div>
+
+<div class="overlay" id="overlay" onclick="closePanel(event)">
+    <div class="panel" onclick="event.stopPropagation()">
+        <div class="panel-header">
+            <h2 id="panelTitle">Panel</h2>
+            <button class="close-panel" onclick="closePanel()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="panel-body" id="panelBody"></div>
+    </div>
+</div>
+
+<div class="overlay dialog" id="dialogOverlay" onclick="closeDialog(event)">
+    <div class="panel" onclick="event.stopPropagation()">
+        <div class="panel-header">
+            <h2 id="dialogTitle">Dialog</h2>
+            <button class="close-panel" onclick="closeDialog()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="panel-body" id="dialogBody"></div>
+    </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <p>Cookies and browser storage are only used to save your playlists, liked songs, and listening history on this device.</p>
+    <div class="panel-actions">
+        <button class="btn primary" id="cookieAccept">Accept</button>
+        <button class="btn" id="cookieDecline">Decline</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="coverInput" accept="image/*" hidden>
+<audio id="audioPlayer" preload="none" playsinline></audio>
+
+<!-- Account modal: visible from the first paint so the site never flashes before login. auth.js fills it in. -->
+<div class="auth-overlay open" id="authOverlay">
+    <div class="auth-panel" id="authPanel">
+        <div class="auth-brand">MUSIFY<span>.</span></div>
+        <div class="auth-status"><i class="fa-solid fa-spinner fa-spin"></i><span>Loading…</span></div>
+    </div>
+</div>
+
+<!-- Load order matters: plus.js wraps functions defined in app.js, and auth.js wraps both -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script src="firebase.js"></script>
+<script src="app.js"></script>
+<script src="plus.js"></script>
+<script src="auth.js"></script>
+<script src="settings.js"></script>
+<script src="developer.js"></script>
+</body>
+</html>

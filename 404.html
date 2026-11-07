@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#010101">
+<title>Musify</title>
+<!--
+  GitHub Pages serves this file for any address that has no real file behind it, like /Musify/Home.
+  It sends the visitor to the app's index.html with the original path in ?p=, and the app turns the
+  address back into /Musify/Home. Keep this file next to index.html.
+-->
+<script>
+(function () {
+    var routes = ["home", "search", "explore", "library", "settings", "new-releases", "wrapped", "playlist", "artist", "album", "developer"];
+    var l = window.location;
+    var parts = l.pathname.split("/");               /* ["", "Musify", "Home", ...] */
+
+    /* how many leading segments are the site folder (the repo name on GitHub Pages) */
+    var at = -1;
+    for (var i = 1; i < parts.length; i++) {
+        if (routes.indexOf(parts[i].toLowerCase()) !== -1) { at = i; break; }
+    }
+    if (at === -1) at = /\.github\.io$/i.test(l.hostname) ? 2 : 1;
+
+    var base = parts.slice(0, at).join("/") + "/";    /* "/Musify/" */
+    var rest = parts.slice(at).join("/");             /* "Home" or "Playlist/pl-abc" */
+
+    var query = l.search ? "&q=" + l.search.slice(1).replace(/&/g, "~and~") : "";
+    l.replace(l.protocol + "//" + l.host + base + "?p=/" + rest.replace(/&/g, "~and~") + query + l.hash);
+})();
+</script>
+</head>
+<body style="background:#010101;color:#fff;font-family:sans-serif">
+<noscript>Musify needs JavaScript. <a href="./" style="color:#fff">Open Musify</a></noscript>
+</body>
+</html>
